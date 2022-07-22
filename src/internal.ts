@@ -16,7 +16,7 @@ enum RuntimeContext {
 
 export type Endpoint = {
 	context: RuntimeContext;
-	tabId: number;
+	tabId: string;
 }
 
 export interface IBridgeMessage<T extends JsonValue> {
@@ -45,14 +45,14 @@ interface IQueuedMessage {
 	message: IInternalMessage;
 }
 
-const ENDPOINT_RE = /^((?:background$)|devtools|content-script|window)(?:@(\d+))?$/;
+const ENDPOINT_RE = /^((?:background$)|devtools|content-script|window)(?:@(\w+))?$/;
 
 export const parseEndpoint = (endpoint: string): Endpoint => {
 	const [, context, tabId] = endpoint.match(ENDPOINT_RE);
 
 	return {
 		context: context as RuntimeContext,
-		tabId: +tabId
+		tabId
 	};
 };
 
@@ -188,7 +188,7 @@ function initIntercoms() {
 	if (context === RuntimeContext.Background) {
 		browser.runtime.onConnect.addListener(incomingPort => {
 			// when coming from devtools, it's should pre-fabricated with inspected tab as linked tab id
-			const portId = incomingPort.name || `content-script@${incomingPort.sender.tab.id}`;
+			const portId = incomingPort.name || `content-script@${incomingPort.sender.tab?.id || incomingPort.sender.id}`;
 			// literal tab id in case of content script, however tab id of inspected page in case of devtools context
 			const { tabId: linkedTabId } = parseEndpoint(portId);
 

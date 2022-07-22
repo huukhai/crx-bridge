@@ -11,7 +11,7 @@ This much
 ```javascript
 // Inside devtools script
 
-import { sendMessage } from 'crx-bridge';
+import { sendMessage } from '@khainh/crx-bridge';
 
 // ...
 
@@ -24,7 +24,7 @@ button.addEventListener('click', () => {
 ```javascript
 // Inside content script
 
-import { sendMessage, onMessage } from 'crx-bridge';
+import { sendMessage, onMessage } from '@khainh/crx-bridge';
 
 onMessage('get-selection', async (message) => {
   const { sender, data: { ignoreCasing } } = message;
@@ -39,7 +39,7 @@ onMessage('get-selection', async (message) => {
 ```javascript
 // Inside background script
 
-import { onMessage } from 'crx-bridge';
+import { onMessage } from '@khainh/crx-bridge';
 
 onMessage('get-preferences', ({ data }) => {
 	const { sync } = data;
@@ -67,12 +67,12 @@ onMessage('get-preferences', ({ data }) => {
 ### Install
 
 ```bash
-$ npm i crx-bridge
+$ npm i @khainh/crx-bridge
 ```
 
 ### Light it up
 
-Just `import Bridge from 'crx-bridge'` wherever you need it and use as shown in [example above](#example)
+Just `import Bridge from '@khainh/crx-bridge'` wherever you need it and use as shown in [example above](#example)
 
 > Even if your extension doesn't need a background page or wont be sending/receiving messages in background script.
 > <br> `crx-bridge` uses background/event context as staging area for messages, therefore it **must** loaded in background/event page for it to work.
@@ -263,7 +263,7 @@ As an example if you plan on having something critical, **always** verify the `s
 
 ```javascript
 // background.js
-import { onMessage, isInternalEndpoint } from 'crx-bridge';
+import { onMessage, isInternalEndpoint } from '@khainh/crx-bridge';
 
 onMessage('getUserBrowsingHistory', (message) => {
   const { data, sender } = message;
@@ -285,7 +285,7 @@ onMessage('getUserBrowsingHistory', (message) => {
 ```javascript
 // background.js (requires transpilation/bundling using webpack(recommended))
 
-import 'crx-bridge';
+import '@khainh/crx-bridge';
 ```
 
 ```javascript

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { JsonValue } from 'type-fest';
 import { browser, Runtime } from 'webextension-polyfill-ts';
 import * as serializeError from 'serialize-error';
@@ -55,15 +56,31 @@ export const parseEndpoint = (endpoint: string): Endpoint => {
 	};
 };
 
+export const isManifestV3 = (): boolean => chrome.runtime.getManifest().manifest_version === 3;
+
 export const isInternalEnpoint = ({ context: ctx }: Endpoint): boolean =>
 	[RuntimeContext.ContentScript, RuntimeContext.Background, RuntimeContext.Devtools].some(internalCtx => internalCtx === ctx);
 
 // Return true if the `browser` object has a specific namespace
 const hasAPI = (nsps: string): boolean => browser[nsps];
+const isRuntimeBrowser = (): boolean => typeof window !== 'undefined';
+// MV2 background
+export const isExtensionBackgroundHtml = (): boolean => {
+	const manifest = chrome.runtime.getManifest();
+	// @ts-ignore
+	return !isManifestV3() && isRuntimeBrowser() && window.location.pathname.startsWith(`/${manifest.background.page}`);
+};
+
+// MV3 background
+export const isExtensionBackgroundServiceWorker = (): boolean => {
+	// @ts-ignore
+	return isManifestV3() && !isRuntimeBrowser() && Boolean(global.serviceWorker) && global.serviceWorker instanceof ServiceWorker;
+};
+const isExtensionBackground = (): boolean => isExtensionBackgroundHtml() || isExtensionBackgroundServiceWorker();
 
 const context: RuntimeContext =
 	hasAPI('devtools') ? RuntimeContext.Devtools
-		: hasAPI('tabs') ? RuntimeContext.Background
+		: isExtensionBackground() ? RuntimeContext.Background
 			: hasAPI('extension') ? RuntimeContext.ContentScript
 				: (typeof document !== 'undefined') ? RuntimeContext.Window : null;
 

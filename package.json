@@ -1,6 +1,6 @@
 {
-  "name": "crx-bridge",
-  "version": "3.0.1",
+  "name": "@khainh/crx-bridge",
+  "version": "3.0.4",
   "description": "Messaging in Chrome extensions made easy. Out of the box.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NeekSandhu/crx-bridge.git"
+    "url": "git+https://github.com/huukhai/crx-bridge.git"
   },
   "keywords": [
     "chrome",
@@ -28,11 +28,12 @@
   "author": "Neek Sandhu <neek.sandhu@outlook.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/NeekSandhu/crx-bridge/issues"
+    "url": "https://github.com/huukhai/crx-bridge/issues"
   },
-  "homepage": "https://github.com/NeekSandhu/crx-bridge#readme",
+  "homepage": "https://github.com/huukhai/crx-bridge#readme",
   "devDependencies": {
-    "@types/node": "^8.0.46",
+    "@types/chrome": "^0.0.193",
+    "@types/node": "^18.0.6",
     "@types/serialize-error": "^4.0.1",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
@@ -47,6 +48,6 @@
     "oneline": "^1.0.3",
     "serialize-error": "^2.1.0",
     "tiny-uid": "^1.1.1",
-    "webextension-polyfill-ts": "^0.20.0"
+    "webextension-polyfill-ts": "^0.26.0"
   }
 }
